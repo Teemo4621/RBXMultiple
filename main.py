@@ -48,7 +48,6 @@ def findFileName():
                 return file
         
 downloadFromUrl(getUrl())
-
 def main(num):
     with zipfile.ZipFile(f"{currentPath}\\RobloxUWP.msixbundle", 'r') as zip_ref:
         zip_ref.extractall(f"{currentPath}")
@@ -65,10 +64,10 @@ def main(num):
     os.remove(f'{path}\\AppxSignature.p7x')
 
     print('Edit File XML')
-    
+
     headXML = f"""<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Package IgnorableNamespaces="uap mp rescap build" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build">
-<Identity Name="ROBLOXCORPORATION.ROBLOX.{num}" Publisher="CN=6FEF9772-62F8-4C8B-8DE0-70F628846515" Version="2.581.563.0" ProcessorArchitecture="x86" />
+<Identity Name="ROBLOXCORPORATION.ROBLOX.{num}" Publisher="CN=6FEF9772-62F8-4C8B-8DE0-70F628846515" Version="{findFileName().split('_')[1]}" ProcessorArchitecture="x86" />
 <mp:PhoneIdentity PhoneProductId="880029fb-d4a3-483c-bc85-3879e2129f1a" PhonePublisherId="b9c585ba-231e-4040-918f-836ba9701ea8" />
 <Properties>
     <DisplayName>Roblox {num}</DisplayName>
