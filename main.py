@@ -15,11 +15,10 @@ def printSlow(text):
 
 printSlow(f"{colorama.Fore.LIGHTMAGENTA_EX}MakeBy: ZEMONNUB")
 
-count = input(f"{colorama.Fore.WHITE}\nAmount: ")
-
+os.system("cls")
+count = int(input(f"{colorama.Fore.WHITE}\nAmount: "))
 def getUrl():
     r = requests.post('https://store.rg-adguard.net/api/GetFiles', data={ "type": "url", "url": "https://apps.microsoft.com/store/detail/roblox/9NBLGGGZM6WM", "ring": "RP", "lang": "en-US" })
-
     if r.status_code == 200:
         soup = BeautifulSoup(r.content, "html.parser")
         a_tags = soup.find_all('a')
@@ -48,23 +47,21 @@ def findFileName():
                 return file
         
 downloadFromUrl(getUrl())
-def main(num):
+def main(num, old):
+    os.system("cls")
+    num = num + old
     with zipfile.ZipFile(f"{currentPath}\\RobloxUWP.msixbundle", 'r') as zip_ref:
-        zip_ref.extractall(f"{currentPath}")
-
+        zip_ref.extractall(f"{currentPath}\\RBXMultiple\\")
     print(f'Create File Roblox {num}')
-
-    with zipfile.ZipFile(f"{currentPath}\\{findFileName()}", 'r') as zip_ref:
-        zip_ref.extractall(f"{currentPath}\\Roblox{num}")
+    with zipfile.ZipFile(f"{currentPath}\\RBXMultiple\\{findFileName()}", 'r') as zip_ref:
+        zip_ref.extractall(f"{currentPath}\\RBXMultiple\\Roblox{num}")
     
     print(f'Create File Roblox {num} Successfully')
     
-    path = f'{currentPath}\\Roblox{num}'
+    path = f'{currentPath}\\RBXMultiple\\Roblox{num}'
     
     os.remove(f'{path}\\AppxSignature.p7x')
-
     print('Edit File XML')
-
     headXML = f"""<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Package IgnorableNamespaces="uap mp rescap build" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build">
 <Identity Name="ROBLOXCORPORATION.ROBLOX.{num}" Publisher="CN=6FEF9772-62F8-4C8B-8DE0-70F628846515" Version="{findFileName().split('_')[1]}" ProcessorArchitecture="x86" />
@@ -109,7 +106,7 @@ def main(num):
         <desktop:FullTrustProcess />
         </desktop:Extension>
         <uap:Extension Category="windows.protocol">
-        <uap:Protocol Name="roblox{num}" />
+        <uap:Protocol Name="roblox" />
         </uap:Extension>
     </Extensions>
     </Application>
@@ -143,11 +140,20 @@ def main(num):
     
     print(f"Install Roblox {num}.....")
     
-    command = ["powershell", "-Command", "Add-AppxPackage", "-path", f"'{currentPath}\\Roblox{str(num)}\\AppxManifest.xml'", "-register"]
+    command = ["powershell", "-Command", "Add-AppxPackage", "-path", f"'{currentPath}\\RBXMultiple\\Roblox{str(num)}\\AppxManifest.xml'", "-register"]
     subprocess.run(command, shell=True, check=True)
     
     print(f"Install Roblox {num} Successfull")
-
-for i in range(int(count)):
-    main(i + 1)
-    os.system('cls')
+    
+if os.path.exists(f"{currentPath}\\RBXMultiple\\Roblox1"):
+    files = os.listdir(f'{currentPath}\\RBXMultiple')
+    roblox_folders = [entry for entry in files if os.path.isdir(os.path.join(f'{currentPath}\\RBXMultiple', entry)) and entry.startswith('Roblox')]
+    roblox_folders.sort()
+    oldfolder = int(roblox_folders[len(roblox_folders) - 1].split("Roblox")[1])
+for i in range(count):
+    if os.path.exists(f"{currentPath}\\RBXMultiple\\Roblox1"):
+        main(i + 1, oldfolder)
+        os.system('cls')
+    else:
+        main(i + 1, 0)
+os.system('cls')
