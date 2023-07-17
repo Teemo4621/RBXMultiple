@@ -144,16 +144,19 @@ def main(num, old):
     subprocess.run(command, shell=True, check=True)
     
     print(f"Install Roblox {num} Successfull")
-    
+
+oldfolder = 0
+
 if os.path.exists(f"{currentPath}\\RBXMultiple\\Roblox1"):
     files = os.listdir(f'{currentPath}\\RBXMultiple')
     roblox_folders = [entry for entry in files if os.path.isdir(os.path.join(f'{currentPath}\\RBXMultiple', entry)) and entry.startswith('Roblox')]
     roblox_folders.sort()
     oldfolder = int(roblox_folders[len(roblox_folders) - 1].split("Roblox")[1])
 for i in range(count):
-    if os.path.exists(f"{currentPath}\\RBXMultiple\\Roblox1"):
-        main(i + 1, oldfolder)
-        os.system('cls')
+    if oldfolder > 0:
+        if os.path.exists(f"{currentPath}\\RBXMultiple\\Roblox1"):
+            main(i + 1, oldfolder)
+            os.system('cls')
     else:
         main(i + 1, 0)
 os.system('cls')
